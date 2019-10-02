@@ -1,14 +1,15 @@
 <?php
+
 /*
   Plugin Name: Coral Remote Images
-  Plugin URI: http://bigseadesign.com/
+  Plugin URI: https://poutine.dev/
   Description: Save space and download time!  Leave your uploaded images where they’re at, in /wp-content, during development on your local.
-  Version: 1.1
-  Author: Big Sea
-  Author URI: http://bigseadesign.com
+  Version: 2.0
+  Author: Poutine
+  Author URI: https://poutine.dev
 */
 
-namespace BigSea\Coral;
+namespace Poutine\Coral;
 
 require_once('library/Module.php');
 
@@ -68,10 +69,10 @@ class RemoteImages implements Module
     if ( !$this->active ) return;
 
     $processFunction = array ( $this, 'processField' );
-    $priority = apply_filters('bsd_coral_remoteimage_priority', 10);
+    $priority = apply_filters('coral_remoteimage_priority', 10);
 
     if ( !is_admin() ) {
-      if ( defined('BSD_CORAL_REMOTEIMAGES_BUFFER') && BSD_CORAL_REMOTEIMAGES_BUFFER ) {
+      if ( defined('CORAL_REMOTEIMAGES_BUFFER') && CORAL_REMOTEIMAGES_BUFFER ) {
         add_action('wp_head', array($this, 'buffer_start'));
         add_action('wp_footer', array($this, 'buffer_end'));
       }
@@ -114,7 +115,7 @@ class RemoteImages implements Module
 
   public function stringReplace ( $link )
   {
-    $link = apply_filters('bsd_coral_remoteimage_string_replace', str_replace($this->currentURLUploadsBase, $this->liveURLUploadsBase, $link));
+    $link = apply_filters('coral_remoteimage_string_replace', str_replace($this->currentURLUploadsBase, $this->liveURLUploadsBase, $link));
 
     return $link;
   } // function
@@ -136,8 +137,8 @@ class RemoteImages implements Module
   private function _getLiveURL()
   {
     // "constant" will always override all other potential settings here. We'll try to do everything we can to determine if we're active or not.  
-    if ( defined('BSD_CORAL_LIVE_URL') ) {
-      $this->liveURL = trailingslashit(BSD_CORAL_LIVE_URL);
+    if ( defined('CORAL_REMOTEIMAGES_PROD_URL') ) {
+      $this->liveURL = trailingslashit(CORAL_REMOTEIMAGES_PROD_URL);
       return;
     }
 
@@ -153,7 +154,7 @@ class RemoteImages implements Module
       $this->liveURL = trailingslashit($urlFromOptionsTable);
     }
 
-    $this->liveURL = trailingslashit(apply_filters('bsd_coral_remoteimage_live_url', $this->liveURL));
+    $this->liveURL = trailingslashit(apply_filters('coral_remoteimage_live_url', $this->liveURL));
   } // function
 
   private function _confirmURLSettings()
