@@ -34,9 +34,9 @@
                     <?php
                         $disable = '';
                         $url = esc_attr(get_option($coralRemoteImages::OPTIONS_FIELD_NAME));
-                        if (defined('BSD_CORAL_LIVE_URL')) {
+                        if (defined('CORAL_REMOTEIMAGES_PROD_URL')) {
                             $disable = 'disabled';
-                            $url = BSD_CORAL_LIVE_URL;
+                            $url = CORAL_REMOTEIMAGES_PROD_URL;
                         }
                     ?>
                     <input type="text" name="coral_remote_images_live" value="<?php echo $url; ?>" <?php echo $disable; ?> />

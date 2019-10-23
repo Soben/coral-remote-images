@@ -1,5 +1,5 @@
 <?php
-namespace BigSea\Coral;
+namespace Poutine\Coral;
 
 interface Module {
 

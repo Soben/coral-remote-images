@@ -1,56 +1,49 @@
-=== Coral - Remote Images ===
+# Coral Remote Images
 
-Contributors: Big Sea, Soben
-Donate link: http://bigseadesign.com/
-Tags: development, testing, local, uploads, images
-Requires at least: 3.4.1
-Tested up to: 4.7
-Stable tag: 1.1
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Do you develop [WordPress](https://wordpress.org) websites locally? Have you found it time consuming and difficult to develop locally on large WordPress websites that has thousands of images? Does your development site get out of date within months due to active content management on the live site?
 
-Save space and download time!  Leave your uploaded images where they're at, in /wp-content, during development on your local.
+Activate this plugin on your local or development environment, and any linked images in the database (referencing your media Uploads folder such as `wp-content/uploads`) will reference from the live site URL.
 
-== Description ==
+Keeping the database in sync is still vital, but you will no longer need to worry about the uploads folder for your Media Attachments!
 
-Do you work with GIT repositories and develop WordPress websites locally? Have you found it time consuming and difficult to develop locally on a large WordPress website that has thousands of images? Does your development site get out of date within months due to active content management on the live site?
+## Installation
 
-Activate this plugin on your local or development environment, and any linked images in the database content (wp-content/uploads folder) will be pulled from the live site URL.
+1. Upload the plugin files to `/wp-content/plugins/coral-remote-images`.
+1. Activate the plugin through the 'Plugins' screen in WordPress (or via [WP CLI](https://developer.wordpress.org/cli/commands/plugin/activate/))
+1. Done (with some potential caveats below)!
 
-== Installation ==
+## Usage
 
-1. Upload the plugin files to the `/wp-content/plugins/coral-remote-images` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
-1. Done!
+### Default Behavior
 
-== Frequently Asked Questions ==
+When pulling down the latest database from production, it's common to leave the database configurations alone and add `WP_HOME` and `WP_SITEURL` constants in your `wp-config.php` file for overriding the settings with your local URL.
 
-= The plugin didn't recognize the live URL =
+If this is what you do, you're already configured! Coral Remote Images will see that your defined `WP_SITEURL` does not match the [siteurl](https://codex.wordpress.org/Function_Reference/site_url) in the `wp_options` table, and flags the option in the database as the 'production' url to switch to.
 
-Yea, it might not. When we at Big Sea build websites locally, we tend to import the live database, and modify the URL for our local installs via PHP constants. If you do not do that, and modify the database, you can tell Coral Remote Images what the live URL is by setting:
+### wp-config.php
 
-`define('BSD_CORAL_LIVE_URL', 'http://yourlivesiteURL.com');`
+If you've modified the database, or want to test with another synced environment, you can add a constant to your `wp-config.php` file:
 
-Add this in your wp-config.php or theme's functions.php ... this is the location of your Wordpress install, not your site's root (if it varies)
+```
+define('CORAL_REMOTEIMAGES_PROD_URL', 'http://yourlivesiteURL.com/path/to/wp');
+```
 
-== Changelog ==
+The URL should match your [siteurl](https://codex.wordpress.org/Function_Reference/site_url) on production (the location of your WP core files).
 
-= 1.1 =
-* Added a settings page under 'Settings' called 'Remote Images'. This allows you to set the live url via the database. Will only be overridden by the BSD_CORAL_LIVE_URL PHP constant.
+### Settings Page
 
-= 1.0.3 =
-* [Fix] Discovered that we weren't compensating for SSL redirection. URLs to change to weren't properly being determined.
+If you don't want to or can't modify your `wp-config.php`, there is a admin panel for managing your settings available at
 
-= 1.0.2 =
-* [Fix] Noticed during wp-cli activate that WP_SITEURL isn't set during the time that it's being utilized. Changed the location that it gets used, and swapped out some conditionals accordingly.
+WP Admin > Remote Images
 
-= 1.0 =
-* Initial Release
+## Notes
 
-== Upgrade Notice ==
+Originally built and released by [Chris Lagasse](https://chrislagasse.com) while at [Big Sea](https://bigsea.co), on the WordPress SVN plugin repository. The WordPress plugin directory is no longer up to date, and currently (2019-10-01) I have no plans to update it.
 
-= 1.1 =
-Admin Panel settings page, for those who don't have full FTP access to an environment.
+## @TODO
 
-= 1.0 =
-Initial Release.
+* Move the admin panel settings location page to Media.
+* Update for WP 5.x
+* Confirm all apply_filters and add more as needed.
+* Define/clarify system requirements
+* switch to composer/psr-2?
